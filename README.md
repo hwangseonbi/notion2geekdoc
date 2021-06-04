@@ -1,1 +1,1 @@
-# Notion → Geekdoc
+# Notion → Hugo geekdoc
