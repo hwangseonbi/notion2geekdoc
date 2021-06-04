@@ -1,0 +1,29 @@
+name: Manually triggered workflow
+on:
+  workflow_dispatch:
+    inputs:
+      root_page_url:
+        description: 'Root Page URL(public)'
+        required: true
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Input $root_page_url :  ${{ github.event.inputs.root_page_url }}"
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: hwangseonbi/notion2geekdoc
+      - run : ls -al
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - run: python notion2geekdoc ${{ github.event.inputs.root_page_url }}
