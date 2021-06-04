@@ -86,7 +86,7 @@ class NotionConverter:
                     # analyze_page(child, recursive=recursive + 1)
 
                 elif child_type == block.ToggleBlock:
-                    safe_md = child.title.replace("\"", "'").replace("__", "**").replace("<", "&lt;").replace(">", "&gt;")
+                    safe_md = child.title.replace("\"", "'").replace("__", "").replace("<", "&lt;").replace(">", "&gt;")
                     blog_content_list.append(tab + "{{< expand \"▼ %s\">}}" % safe_md)
                     analyze_page(child, recursive=recursive)
                     blog_content_list.append(tab + "{{< /expand >}}")
