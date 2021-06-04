@@ -1,8 +1,8 @@
 from pathlib import Path
 from notion.client import NotionClient
 from notion import block
-import requests
 from yaml import dump as yaml_dump
+import requests
 
 
 class Resources:
@@ -149,7 +149,7 @@ class NotionConverter:
         with open(file_path, "w") as f:
             f.write(header)
 
-    def convert(self, root_page_url):
+    def convert(self, root_page_url, draft=False):
         self.root_dir_path.mkdir()
 
         root_page = self.client.get_block(root_page_url)
@@ -163,13 +163,18 @@ class NotionConverter:
 
             contents = collection_view.collection.get_rows()
             for content in contents:
-                content_dir_path = category_dir_path / Path(content.id)
-                content_dir_path.mkdir()
+                if content.status == "Draft" or draft:
+                    continue
+                elif content.status == "Published" or draft:
+                    content_dir_path = category_dir_path / Path(content.id)
+                    content_dir_path.mkdir()
 
-                header, blog_content, resources = self.block_to_geekdoc(content)
+                    header, blog_content, resources = self.block_to_geekdoc(content)
 
-                self.write_content(
-                    content_file_path=content_dir_path / Path("_index.md"),
-                    header=header,
-                    blog_content=blog_content)
-                self.download_resources(content_dir_path, resources)
+                    self.write_content(
+                        content_file_path=content_dir_path / Path("_index.md"),
+                        header=header,
+                        blog_content=blog_content)
+                    self.download_resources(content_dir_path, resources)
+                else:
+                    print("Unknown content status : %s" % content.status)
