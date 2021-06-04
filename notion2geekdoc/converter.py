@@ -61,52 +61,66 @@ class NotionConverter:
                 tab = "\t" * recursive
 
                 child_type = block.BLOCK_TYPES.get(child.type)
+
                 if child_type == None:
                     if child.type == 'table_of_contents':
                         blog_content_list.append("{{< toc >}}")
+
                 elif child_type == block.HeaderBlock:
-                    blog_content_list.append("# %s" % child.title)
+                    safe_md = child.title.replace("<", "&lt;").replace(">", "&gt;")
+                    blog_content_list.append("# %s" % safe_md)
+
                 elif child_type == block.SubheaderBlock:
-                    blog_content_list.append("## %s" % child.title)
+                    safe_md = child.title.replace("<", "&lt;").replace(">", "&gt;")
+                    blog_content_list.append("## %s" % safe_md)
+
                 elif child_type == block.SubsubheaderBlock:
-                    blog_content_list.append("### %s" % child.title)
+                    safe_md = child.title.replace("<", "&lt;").replace(">", "&gt;")
+                    blog_content_list.append("### %s" % safe_md)
+
                 elif child_type == block.TextBlock:
                     if child.title == '':
                         blog_content_list.append("<br>")
-                    text = child.title.replace("__", "**")
-                    blog_content_list.append(tab + text)
+                    safe_md = child.title.replace("__", "**").replace("<", "&lt;").replace(">", "&gt;")
+                    blog_content_list.append(tab + safe_md)
                     # analyze_page(child, recursive=recursive + 1)
+
                 elif child_type == block.ToggleBlock:
-                    blog_content_list.append(tab + "{{< expand \"▼ %s\">}}" % child.title.replace("\"", "'"))
+                    safe_md = child.title.replace("\"", "'").replace("__", "**").replace("<", "&lt;").replace(">", "&gt;")
+                    blog_content_list.append(tab + "{{< expand \"▼ %s\">}}" % safe_md)
                     analyze_page(child, recursive=recursive)
                     blog_content_list.append(tab + "{{< /expand >}}")
+
                 elif child_type == block.DividerBlock:
                     blog_content_list.append("---")
+
                 elif child_type == block.ImageBlock:
                     r = Resources(child.file_id, child.display_source, child.width)
                     resources.append(r)
                     blog_content_list.append(tab +
                                              "{{< img name=\"%s\" size=\"%s\" width=\"%d\" lazy=false >}}"
                                              % (r.get_file_name_path(), r.get_size(r.width), r.width))
+
                 elif child_type == block.NumberedListBlock:
-                    blog_content_list.append("%s1. %s" % ("\t" * recursive, child.title))
+                    safe_md = child.title.replace("__", "**").replace("<", "&lt;").replace(">", "&gt;")
+                    blog_content_list.append("%s1. %s" % ("\t" * recursive, safe_md))
                     analyze_page(child, recursive=recursive + 1)
+
                 elif child_type == block.QuoteBlock:
+                    safe_md = "***" + child.title.replace("\n", "<br>").strip() + "***"
+                    safe_md = "> " + safe_md
+                    blog_content_list.append(safe_md)
 
-                    text = "***" + child.title.replace("\n", "<br>").strip() + "***"
-                    text = "> " + text
-                    blog_content_list.append(text)
                 elif child_type == block.BulletedListBlock:
-                    text = tab + "- " + child.title
-                    blog_content_list.append(text)
+                    safe_md = tab + "- " + child.title
+                    blog_content_list.append(safe_md)
                     analyze_page(child, recursive=recursive + 1)
-                elif child_type == block.TodoBlock:
-                    text = tab + "- [%s] " % (' ' if child.checked else 'x') + child.title
 
-                    blog_content_list.append(text)
+                elif child_type == block.TodoBlock:
+                    safe_md = tab + "- [%s] " % (' ' if child.checked else 'x') + child.title
+                    blog_content_list.append(safe_md)
                     analyze_page(child, recursive=recursive + 1)
                 elif child_type == block.VideoBlock:
-
                     blog_content_list.append("{{< youtube %s >}}" % Path(child.source).name)
                     analyze_page(child, recursive=recursive + 1)
                 else:
