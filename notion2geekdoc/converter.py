@@ -120,8 +120,17 @@ class NotionConverter:
                     safe_md = tab + "- [%s] " % (' ' if child.checked else 'x') + child.title
                     blog_content_list.append(safe_md)
                     analyze_page(child, recursive=recursive + 1)
+
                 elif child_type == block.VideoBlock:
                     blog_content_list.append("{{< youtube %s >}}" % Path(child.source).name)
+                    analyze_page(child, recursive=recursive + 1)
+
+                elif child_type == block.CodeBlock:
+                    # Todo : NOT SAFE!! Rednering collision with toc occured in case that code include special char related with markdown.
+                    #  something like "{{".
+                    safe_md = "{{< highlight %s \"linenos=table\" >}}\n"%child.language + child.title + "\n{{< /highlight >}}"
+
+                    blog_content_list.append(safe_md)
                     analyze_page(child, recursive=recursive + 1)
                 else:
                     print("[%s] %s" % (child_type, child))
