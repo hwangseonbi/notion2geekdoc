@@ -51,7 +51,7 @@ class NotionConverter:
         name_path = Path(name)
         (self.root_dir_path / name_path).mkdir()
 
-    def block_to_geekdoc(self, content):
+    def block_to_geekdoc(self, content, weight=0):
         blog_content_list = []
         header = ''
         resources = []
@@ -118,6 +118,7 @@ class NotionConverter:
         header = """---\n%s\n---\n""" % yaml_dump({
             "title": page.title,
             "date": page.LastEditedTime,
+            "weight": weight,
             "resources": list(map(lambda r: r.to_dict(), resources))
         }, allow_unicode=True)
 
@@ -162,19 +163,23 @@ class NotionConverter:
             self.create_category_index_file(category_dir_path, title=collection_view.title, weight=seq)
 
             contents = collection_view.collection.get_rows()
-            for content in contents:
-                if content.status == "Draft" or draft:
-                    continue
-                elif content.status == "Published" or draft:
+            for content_seq, content in enumerate(contents):
+                publish_ok = False
+                if content.status == "Published":
+                    publish_ok = True
+                elif content.status == "Draft" and draft:
+                    publish_ok = True
+                else:
+                    print("Unknown content status : %s" % content.status)
+
+                if publish_ok:
                     content_dir_path = category_dir_path / Path(content.id)
                     content_dir_path.mkdir()
 
-                    header, blog_content, resources = self.block_to_geekdoc(content)
+                    header, blog_content, resources = self.block_to_geekdoc(content, weight=content_seq)
 
                     self.write_content(
                         content_file_path=content_dir_path / Path("_index.md"),
                         header=header,
                         blog_content=blog_content)
                     self.download_resources(content_dir_path, resources)
-                else:
-                    print("Unknown content status : %s" % content.status)
