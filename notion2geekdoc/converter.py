@@ -134,7 +134,9 @@ class NotionConverter:
                     analyze_page(child, recursive=recursive + 1)
 
                 elif child_type == block.CalloutBlock:
-                    safe_md = tab + "```\n"+child.icon + child.title + "\n```"
+                    safe_md = tab + "```\n"
+                    safe_md += tab + child.icon + child.title.replace("\n", "\n"+tab) + "\n"
+                    safe_md += tab+"```"
                     blog_content_list.append(safe_md)
 
                 else:
