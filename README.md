@@ -1,1 +1,1 @@
-# hwangseonbi.github.io.sync-notion
+# Notion → Geekdoc
