@@ -107,7 +107,7 @@ class NotionConverter:
                     analyze_page(child, recursive=recursive + 1)
                 elif child_type == block.VideoBlock:
 
-                    blog_content_list.append("{{< youtube %s >}}"%Path(child.source).name)
+                    blog_content_list.append("{{< youtube %s >}}" % Path(child.source).name)
                     analyze_page(child, recursive=recursive + 1)
                 else:
                     print("[%s] %s" % (child_type, child))
