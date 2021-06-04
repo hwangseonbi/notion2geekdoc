@@ -80,7 +80,7 @@ class NotionConverter:
 
                 elif child_type == block.TextBlock:
                     if child.title == '':
-                        blog_content_list.append("<br>")
+                        blog_content_list.append(tab + "<br>")
                     safe_md = child.title.replace("__", "**").replace("<", "&lt;").replace(">", "&gt;")
                     blog_content_list.append(tab + safe_md)
                     # analyze_page(child, recursive=recursive + 1)
@@ -128,10 +128,15 @@ class NotionConverter:
                 elif child_type == block.CodeBlock:
                     # Todo : NOT SAFE!! Rednering collision with toc occured in case that code include special char related with markdown.
                     #  something like "{{".
-                    safe_md = "{{< highlight %s \"linenos=table\" >}}\n"%child.language + child.title + "\n{{< /highlight >}}"
+                    safe_md = tab + "{{< highlight %s \"linenos=table\" >}}\n" % child.language + child.title + "\n" + tab + "{{< /highlight >}}"
 
                     blog_content_list.append(safe_md)
                     analyze_page(child, recursive=recursive + 1)
+
+                elif child_type == block.CalloutBlock:
+                    safe_md = tab + "```\n"+child.icon + child.title + "\n```"
+                    blog_content_list.append(safe_md)
+
                 else:
                     print("[%s] %s" % (child_type, child))
 
