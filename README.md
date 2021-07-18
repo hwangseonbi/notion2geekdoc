@@ -6,19 +6,21 @@ Notion | Blog
 ------------ | -------------
 ![](./readme/image/notion_main.png) | ![](./readme/image/blog_main.png)
 
-#사용방법
+# 사용방법
 
----
 
-##준비물
+## 준비물
 이 패키지를 실행하기 전에 준비해야할 것들이 있습니다.
 
-###1. Notion 토큰
+### 1. Notion 토큰
 
 notion2geekdoc은 내부적으로 [notion-py](https://github.com/jamalex/notion-py) 를 사용합니다. [notion-py](https://github.com/jamalex/notion-py) 는 당신의 공개 Notion 페이지에서 요소들을 가져오기위해 개인 토큰을 사용합니다. 토큰은 자신의 notion 페이지를 로드할 때 개발자도구를 통해 쿠키를 확인하여 얻을 수 있습니다. `token_v2` 값이 바로 그것입니다.
+
 ![](./readme/image/howtogettoken.png)
 
-###2. Root Page
+<br><br>
+
+### 2. Root Page
 
 Root Page는 테이블로만 이루어져야합니다. 각 테이블은 블로그의 카테고리가 됩니다.
 
@@ -35,20 +37,22 @@ Property Type | Property Name | ETC
  Title| Name
 Created Time | CreatedTime
 Last edited time | LastEditedTime
-Select |Status  | ```Published``` 또는 ```Draft```가 되어야 합니다.
+Select |Status  | ```Published``` 또는 ```Draft``` 중 하나가 되어야 합니다.
 
 
 
+<br><br><br><br>
 
+## 실행
 
-##실행
-
-###의존성 설치
+### 의존성 설치
 ```
 pip3 install -r requirements.txt
 ```
 
-###실행
+<br><br>
+
+### 모듈 실행
 `NOTION_TOKEN_V2` 환경변수로 토큰을 전달합니다.
 ```
 NOTION_TOKEN_V2=<NOTION_TOKEN_V2> python3 notion2geekdoc <NOTION_ROOT_PAGE_URL>
@@ -61,6 +65,7 @@ NOTION_TOKEN_V2=<NOTION_TOKEN_V2> python3 notion2geekdoc <NOTION_ROOT_PAGE_URL>
 
 ![](./readme/image/run_2.png)
 
+<br><br><br><br>
 
 # 자동화
 
