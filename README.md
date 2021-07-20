@@ -61,10 +61,12 @@ NOTION_TOKEN_V2=<NOTION_TOKEN_V2> python3 notion2geekdoc <NOTION_ROOT_PAGE_URL>
 
 ![](./readme/image/run_1.png)
 
-`content` 디렉토리가 생성된 것을 확인할 수 있습니다. `content` 디렉토리는 [Hugo Geekdoc Theme](https://github.com/thegeeklab/hugo-geekdoc) 에서 그대로 사용할 수 있습니다. notion2geekdoc의 역할은 여기까지입니다.   
+[Hugo Geekdoc Theme](https://github.com/thegeeklab/hugo-geekdoc) 에 맞추어 렌더링이 완료되어 `content` 디렉토리가 생성된 것을 확인할 수 있습니다.
+
 
 ![](./readme/image/run_2.png)
 
+notion2geekdoc의 역할은 여기까지입니다. 이제 [Hugo site를 생성](https://gohugo.io/getting-started/quick-start/#step-2-create-a-new-site) 하고 [테마를 설정](https://gohugo.io/getting-started/quick-start/#step-3-add-a-theme) 하신 뒤 [`content` 디렉토리](https://gohugo.io/getting-started/directory-structure/#directory-structure-explained) 를 대체하세요.
 <br><br><br><br>
 
 # 자동화
