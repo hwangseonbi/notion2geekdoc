@@ -72,4 +72,4 @@ notion2geekdoc의 역할은 여기까지입니다. 이제 [Hugo site를 생성](
 # 자동화
 
 github에 정적블로그를 구축해놓았다면 해당 레포지토리에서 git-flow를 정의하여 자동화할 수 있습니다.
-자세한 방법은 [Notion을 Github Blog로 동기화하기](https://www.notion.so/hwangseonbi/Notion-Github-Blog-6853b939a45545308ced8fc779a2500e) 을 참고해주세요.
+자세한 방법은 [Git Action로 Notion과 Hugo 블로그 동기화하기(Geekdoc Theme)](https://www.notion.so/hwangseonbi/Git-Action-Notion-Hugo-Geekdoc-Theme-6853b939a45545308ced8fc779a2500e) 을 참고해주세요.
